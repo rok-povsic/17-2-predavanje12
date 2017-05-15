@@ -1,4 +1,5 @@
 import cgi
+import uuid
 
 from google.appengine.api import users
 from google.appengine.api import memcache
@@ -9,9 +10,21 @@ from models.topic import Topic
 
 class TopicAddHandler(BaseHandler):
     def get(self):
-        return self.render_template("topic_add.html")
+        csrf_token = str(uuid.uuid4())
+        memcache.add(key=csrf_token, value=True, time=600)
+
+        params = {
+            "csrf_token": csrf_token
+        }
+        return self.render_template("topic_add.html", params)
 
     def post(self):
+        csrf_token_from_form = self.request.get("csrf_token")
+
+        csrf_memcache_result = memcache.get(csrf_token_from_form)
+        if not csrf_memcache_result:
+            return self.write("You are an attacker.")
+
         user = users.get_current_user()
         if not user:
             return self.write("You are not logged in.")
