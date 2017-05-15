@@ -1,7 +1,11 @@
+import uuid
+
 from google.appengine.api import users
+from google.appengine.api import memcache
 
 from handlers.base import BaseHandler
 from models.topic import Topic
+
 
 class TopicAddHandler(BaseHandler):
     def get(self):
@@ -23,3 +27,12 @@ class TopicAddHandler(BaseHandler):
         new_topic.put()
 
         return self.write("Topic created successfully.")
+
+
+class TopicShowHandler(BaseHandler):
+    def get(self, topic_id):
+        topic = Topic.get_by_id(int(topic_id))
+        params = {
+            "topic": topic
+        }
+        return self.render_template("topic_show.html", params)

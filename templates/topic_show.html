@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block naslov %}Show Topic{% endblock %}
+
+{% block vsebina %}
+  <div class="panel panel-primary">
+    <div class="panel-heading">{{ topic.title }}</div>
+    <div class="panel-body">
+      <p style="font-size: 12px">{{ topic.author_email }} - {{ topic.created }}</p>
+      <p>
+        {{ topic.content }}
+      </p>
+    </div>
+  </div>
+{% endblock %}
