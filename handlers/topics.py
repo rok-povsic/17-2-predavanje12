@@ -1,4 +1,4 @@
-import uuid
+import cgi
 
 from google.appengine.api import users
 from google.appengine.api import memcache
@@ -16,8 +16,8 @@ class TopicAddHandler(BaseHandler):
         if not user:
             return self.write("You are not logged in.")
 
-        title = self.request.get("title")
-        text = self.request.get("text")
+        title = cgi.escape(self.request.get("title"))
+        text = cgi.escape(self.request.get("text"))
 
         new_topic = Topic(
             title=title,
