@@ -1,8 +1,10 @@
 import os
 import jinja2
 import webapp2
+import uuid
 
 from google.appengine.api import users
+from google.appengine.api import memcache
 
 from models.topic import Topic
 
@@ -40,6 +42,14 @@ class BaseHandler(webapp2.RequestHandler):
 
         template = jinja_env.get_template(view_filename)
         return self.response.out.write(template.render(params))
+
+    def render_template_with_csrf(self, view_filename, params=None):
+        if not params:
+            params = {}
+        csrf_token = str(uuid.uuid4())
+        memcache.add(key=csrf_token, value=True, time=600)
+        params["csrf_token"] = csrf_token
+        return self.render_template(view_filename, params)
 
 
 class MainHandler(BaseHandler):

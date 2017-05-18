@@ -1,5 +1,4 @@
 import cgi
-import uuid
 
 from google.appengine.api import users
 from google.appengine.api import memcache
@@ -11,13 +10,7 @@ from models.comment import Comment
 
 class TopicAddHandler(BaseHandler):
     def get(self):
-        csrf_token = str(uuid.uuid4())
-        memcache.add(key=csrf_token, value=True, time=600)
-
-        params = {
-            "csrf_token": csrf_token
-        }
-        return self.render_template("topic_add.html", params)
+        return self.render_template_with_csrf("topic_add.html")
 
     def post(self):
         csrf_token_from_form = self.request.get("csrf_token")
@@ -45,14 +38,10 @@ class TopicAddHandler(BaseHandler):
 
 class TopicShowHandler(BaseHandler):
     def get(self, topic_id):
-        csrf_token = str(uuid.uuid4())
-        memcache.add(key=csrf_token, value=True, time=600)
-
         topic = Topic.get_by_id(int(topic_id))
         comments = Comment.query(Comment.topic_id == int(topic_id), Comment.deleted == False).fetch()
         params = {
             "topic": topic,
             "comments": comments,
-            "csrf_token": csrf_token,
         }
-        return self.render_template("topic_show.html", params)
+        return self.render_template_with_csrf("topic_show.html", params)
