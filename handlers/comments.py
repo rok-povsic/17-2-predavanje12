@@ -5,6 +5,7 @@ from google.appengine.api import memcache
 
 from handlers.base import BaseHandler
 from models.comment import Comment
+from models.topic import Topic
 
 
 class CommentAddHandler(BaseHandler):
@@ -21,11 +22,7 @@ class CommentAddHandler(BaseHandler):
 
         text = cgi.escape(self.request.get("text"))
 
-        new_comment = Comment(
-            content=text,
-            author_email=user.email(),
-            topic_id=int(topic_id),
-        )
-        new_comment.put()
+        topic = Topic.get_by_id(int(topic_id))
+        new_comment = Comment.create(text, user, topic)
 
         return self.write("Comment created successfully.")
