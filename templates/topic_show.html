@@ -3,6 +3,14 @@
 {% block naslov %}Show Topic{% endblock %}
 
 {% block vsebina %}
+  {% if is_user_admin %}
+    <form method="post" action="/topic/{{ topic.key.id() }}/delete">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button class="btn btn-danger">Delete topic</button>
+    </form>
+    <br />
+  {% endif %}
+
   <div class="panel panel-primary">
     <div class="panel-heading">{{ topic.title }}</div>
     <div class="panel-body">

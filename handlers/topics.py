@@ -40,8 +40,18 @@ class TopicShowHandler(BaseHandler):
     def get(self, topic_id):
         topic = Topic.get_by_id(int(topic_id))
         comments = Comment.query(Comment.topic_id == int(topic_id), Comment.deleted == False).fetch()
+        is_user_admin = users.is_current_user_admin()
         params = {
             "topic": topic,
             "comments": comments,
+            "is_user_admin": is_user_admin
         }
         return self.render_template_with_csrf("topic_show.html", params)
+
+
+class TopicDeleteHandler(BaseHandler):
+    def post(self, topic_id):
+        topic = Topic.get_by_id(int(topic_id))
+        topic.deleted = True
+        topic.put()
+        return self.write("Topic deleted.")
