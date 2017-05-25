@@ -34,6 +34,47 @@
       </tr>
     {% endfor %}
   </table>
+
+  <button id="testni-gumb">Testni gumb</button>
 </div>
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+  $(document).ready(function() {
+    console.log("Izpis preko JS.");
+    var name = "Rok";
+
+    if (name === "Rok") {
+        console.log("Pozdravljeni, Rok.");
+    } else {
+        console.log("Pozdravljen, neznanec.");
+    }
+
+    function izpis(text) {
+        console.log(text);
+    }
+
+    izpis("Klic funkcije izpis.");
+
+    var seznam = ["ABC", 23, false];
+    seznam.forEach(function(element) {
+       console.log(element);
+    });
+
+    $("h1").css("color", "red");
+
+    $("#testni-gumb").click(function() {
+        console.log("Klik gumba");
+        
+        var glava = $("h1");
+        glava.css("font-size", "20px");
+        $("body").css("background-color", "green");
+        glava.hide();
+    });
+  });
+</script>
 
 {% endblock %}
