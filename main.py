@@ -6,6 +6,7 @@ from handlers.topics import TopicAddHandler, TopicShowHandler, TopicDeleteHandle
 from handlers.comments import CommentAddHandler
 from tasks.email_new_comment import EmailNewCommentWorker
 from crons.delete_topics import DeleteTopicsCron
+from api.topic_api import TopicApi
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler, name="main-page"),
@@ -16,4 +17,5 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/topic/<topic_id:\d+>/delete', TopicDeleteHandler),
     webapp2.Route('/task/email-new-comment', EmailNewCommentWorker),
     webapp2.Route('/cron/delete-topics', DeleteTopicsCron),
+    webapp2.Route('/api/topic/details/<topic_id:\d+>', TopicApi),
 ], debug=True)

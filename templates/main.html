@@ -13,6 +13,12 @@
   <a href="/topic/add" class="btn btn-info">New Topic</a>
 
   <br />
+
+  <div id="nalaganje"
+       style="text-align: center; font-size:30px;">
+    STRAN SE NALAGA
+  </div>
+
   <br />
 
   <table class="table">
@@ -28,6 +34,8 @@
             <a href="/topic/show/{{ topic.key.id() }}">
               {{ topic.title }}
             </a>
+            -
+            <a class="details-link" id="{{ topic.key.id() }}">Details</a>
           </td>
           <td style="width: 20%;">{{ topic.author_email }}</td>
         </a>
@@ -35,46 +43,20 @@
     {% endfor %}
   </table>
 
+  <div id="naslov-teme" style="font-size: 25px"></div>
+  <div id="vsebina-teme"></div>
+
   <button id="testni-gumb">Testni gumb</button>
+  <button id="testni-gumb-2">Testni gumb 2</button>
+
+  <div id="testni-div">
+    To je besedilo testnega diva.
+  </div>
 </div>
 
 {% endblock %}
 
 
 {% block script %}
-<script>
-  $(document).ready(function() {
-    console.log("Izpis preko JS.");
-    var name = "Rok";
-
-    if (name === "Rok") {
-        console.log("Pozdravljeni, Rok.");
-    } else {
-        console.log("Pozdravljen, neznanec.");
-    }
-
-    function izpis(text) {
-        console.log(text);
-    }
-
-    izpis("Klic funkcije izpis.");
-
-    var seznam = ["ABC", 23, false];
-    seznam.forEach(function(element) {
-       console.log(element);
-    });
-
-    $("h1").css("color", "red");
-
-    $("#testni-gumb").click(function() {
-        console.log("Klik gumba");
-        
-        var glava = $("h1");
-        glava.css("font-size", "20px");
-        $("body").css("background-color", "green");
-        glava.hide();
-    });
-  });
-</script>
-
+  <script src="/assets/custom/js/main.js"></script>
 {% endblock %}
